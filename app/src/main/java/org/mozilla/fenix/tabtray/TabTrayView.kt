@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.extensions.LayoutContainer
@@ -25,6 +26,7 @@ import mozilla.components.browser.tabstray.BrowserTabsTray
 import mozilla.components.concept.tabstray.Tab
 import mozilla.components.concept.tabstray.TabsTray
 import mozilla.components.feature.tabs.tabstray.TabsFeature
+import mozilla.components.support.base.feature.ViewBoundFeatureWrapper
 import org.mozilla.fenix.R
 import org.mozilla.fenix.ext.components
 
@@ -43,7 +45,8 @@ interface TabTrayInteractor {
 class TabTrayView(
     private val container: ViewGroup,
     private val interactor: TabTrayInteractor,
-    private val isPrivate: Boolean
+    private val isPrivate: Boolean,
+    lifecycleOwner: LifecycleOwner
 ) : LayoutContainer, TabsTray.Observer, TabLayout.OnTabSelectedListener {
     val fabView = LayoutInflater.from(container.context)
         .inflate(R.layout.component_tabstray_fab, container, true)
@@ -54,7 +57,7 @@ class TabTrayView(
     val isPrivateModeSelected: Boolean get() = view.tab_layout.selectedTabPosition == PRIVATE_TAB_ID
 
     private val behavior = BottomSheetBehavior.from(view.tab_wrapper)
-    private var tabsFeature: TabsFeature
+    private var tabsFeature = ViewBoundFeatureWrapper<TabsFeature>()
     private var tabTrayItemMenu: TabTrayItemMenu
 
     override val containerView: View?
@@ -91,12 +94,16 @@ class TabTrayView(
 
         view.tab_layout.addOnTabSelectedListener(this)
 
-        tabsFeature = TabsFeature(
-            view.tabsTray,
-            view.context.components.core.store,
-            view.context.components.useCases.tabsUseCases,
-            { it.content.private == isPrivate },
-            { })
+        tabsFeature.set(
+            feature = TabsFeature(
+                view.tabsTray,
+                view.context.components.core.store,
+                view.context.components.useCases.tabsUseCases,
+                { it.content.private == isPrivate },
+                { }),
+            owner = lifecycleOwner,
+            view = view
+        )
 
         (view.tabsTray as? BrowserTabsTray)?.also { tray ->
             TabsTouchHelper(tray.tabsAdapter).attachToRecyclerView(tray)
@@ -124,8 +131,7 @@ class TabTrayView(
             interactor.onNewTabTapped(isPrivateModeSelected)
         }
 
-        tabsTray.register(this)
-        tabsFeature.start()
+        tabsTray.register(this, owner = lifecycleOwner)
     }
 
     override fun onTabSelected(tab: Tab) {
@@ -139,7 +145,7 @@ class TabTrayView(
             else -> { state -> !state.content.private }
         }
 
-        tabsFeature.filterTabs(filter)
+        tabsFeature.get()?.filterTabs(filter)
 
         updateState(view.context.components.core.store.state)
     }

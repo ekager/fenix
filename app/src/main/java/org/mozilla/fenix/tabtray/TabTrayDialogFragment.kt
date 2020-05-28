@@ -31,7 +31,10 @@ class TabTrayDialogFragment : AppCompatDialogFragment(), TabTrayInteractor {
         fun onCloseAllTabsClicked(private: Boolean)
     }
 
-    private lateinit var tabTrayView: TabTrayView
+    private var _tabTrayView: TabTrayView? = null
+    protected val tabTrayView: TabTrayView
+        get() = _tabTrayView!!
+
     var interactor: Interactor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,10 +50,11 @@ class TabTrayDialogFragment : AppCompatDialogFragment(), TabTrayInteractor {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tabTrayView = TabTrayView(
+        _tabTrayView = TabTrayView(
             view.tabLayout,
             this,
-            (activity as HomeActivity).browsingModeManager.mode.isPrivate
+            (activity as HomeActivity).browsingModeManager.mode.isPrivate,
+            viewLifecycleOwner
         )
 
         tabLayout.setOnClickListener {
@@ -72,6 +76,11 @@ class TabTrayDialogFragment : AppCompatDialogFragment(), TabTrayInteractor {
         }
 
         consumeFrom(requireComponents.core.store) { tabTrayView.updateState(it) }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _tabTrayView = null
     }
 
     override fun onTabClosed(tab: Tab) {
