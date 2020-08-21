@@ -478,6 +478,8 @@
     <string name="tab_tray_menu_item_save">Save to collection</string>
     <!-- Text shown in the menu for sharing all tabs -->
     <string name="tab_tray_menu_item_share">Share all tabs</string>
+    <!-- Text shown in the menu to view recently closed tabs -->
+    <string name="tab_tray_menu_recently_closed">Recently closed tabs</string>
     <!-- Text shown in the menu for closing all tabs -->
     <string name="tab_tray_menu_item_close">Close all tabs</string>
     <!-- Shortcut action to open new tab -->
@@ -564,6 +566,8 @@
     <string name="history_older">Older</string>
     <!-- Text shown when no history exists -->
     <string name="history_empty_message">No history here</string>
+    <!-- Section of history that shows recently closed tabs -->
+    <string name="history_recently_closed_tabs">Recently closed tabs</string>
 
     <!-- Downloads -->
     <!-- Text shown when no download exists -->

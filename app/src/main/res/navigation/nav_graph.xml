@@ -112,6 +112,9 @@
     <action
         android:id="@+id/action_global_tabHistoryDialogFragment"
         app:destination="@id/tabHistoryDialogFragment" />
+    <action
+        android:id="@+id/action_global_recentlyClosedFragment"
+        app:destination="@id/recentlyClosedFragment" />
 
     <dialog
         android:id="@+id/tabTrayDialogFragment"
@@ -175,6 +178,11 @@
             android:defaultValue="NONE"
             app:argType="org.mozilla.fenix.components.metrics.Event$PerformedSearch$SearchAccessPoint" />
     </fragment>
+
+    <fragment
+        android:id="@+id/recentlyClosedFragment"
+        android:name="org.mozilla.fenix.library.history.RecentlyClosedFragment"
+        android:label="@string/history_recently_closed_tabs"/>
 
     <fragment
         android:id="@+id/SitePermissionsManagePhoneFeature"

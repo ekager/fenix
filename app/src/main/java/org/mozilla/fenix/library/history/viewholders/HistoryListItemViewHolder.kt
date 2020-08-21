@@ -43,7 +43,7 @@ class HistoryListItemViewHolder(
     fun bind(
         item: HistoryItem,
         timeGroup: HistoryItemTimeGroup?,
-        showDeleteButton: Boolean,
+        showTopContent: Boolean,
         mode: HistoryFragmentState.Mode,
         isPendingDeletion: Boolean = false
     ) {
@@ -56,7 +56,7 @@ class HistoryListItemViewHolder(
         itemView.history_layout.titleView.text = item.title
         itemView.history_layout.urlView.text = item.url
 
-        toggleDeleteButton(showDeleteButton, mode === HistoryFragmentState.Mode.Normal)
+        toggleTopContent(showTopContent, mode === HistoryFragmentState.Mode.Normal)
 
         val headerText = timeGroup?.humanReadable(itemView.context)
         toggleHeader(headerText)
@@ -86,11 +86,11 @@ class HistoryListItemViewHolder(
         }
     }
 
-    private fun toggleDeleteButton(
-        showDeleteButton: Boolean,
+    private fun toggleTopContent(
+        showTopContent: Boolean,
         isNormalMode: Boolean
     ) {
-        if (showDeleteButton) {
+        if (showTopContent) {
             itemView.delete_button.run {
                 visibility = View.VISIBLE
 
@@ -102,7 +102,9 @@ class HistoryListItemViewHolder(
                     alpha = DELETE_BUTTON_DISABLED_ALPHA
                 }
             }
+            itemView.recently_closed.visibility = View.VISIBLE
         } else {
+            itemView.recently_closed.visibility = View.GONE
             itemView.delete_button.visibility = View.GONE
         }
     }

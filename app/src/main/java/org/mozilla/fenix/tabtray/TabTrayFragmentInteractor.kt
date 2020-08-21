@@ -35,6 +35,11 @@ interface TabTrayInteractor {
     fun onCloseAllTabsClicked(private: Boolean)
 
     /**
+     * Called when user clicks the recently closed tabs menu button.
+     */
+    fun onOpenRecentlyClosedClicked()
+
+    /**
      * Called when the user clicks on a synced tab entry.
      */
     fun onSyncedTabClicked(syncTab: SyncTab)
@@ -93,6 +98,10 @@ class TabTrayFragmentInteractor(private val controller: TabTrayController) : Tab
 
     override fun onCloseAllTabsClicked(private: Boolean) {
         controller.onCloseAllTabsClicked(private)
+    }
+
+    override fun onOpenRecentlyClosedClicked() {
+         controller.handleRecentlyClosedClicked()
     }
 
     override fun onSyncedTabClicked(syncTab: SyncTab) {
