@@ -18,6 +18,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:visibility="gone"
         android:id="@+id/recently_closed"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
@@ -29,7 +31,7 @@
             android:layout_height="@dimen/history_favicon_width_height"
             android:layout_marginStart="20dp"
             android:importantForAccessibility="no"
-            android:padding="4dp"
+            android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

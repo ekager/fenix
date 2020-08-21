@@ -102,6 +102,7 @@ class HistoryListItemViewHolder(
                     alpha = DELETE_BUTTON_DISABLED_ALPHA
                 }
             }
+            itemView.recently_closed_tabs_description.text = "TODO"
             itemView.recently_closed.visibility = View.VISIBLE
         } else {
             itemView.recently_closed.visibility = View.GONE

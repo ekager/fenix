@@ -53,6 +53,8 @@ object Deps {
     const val kotlin_coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
     const val kotlin_coroutines_test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
     const val kotlin_coroutines_android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+    const val tools_kotlin_serialization = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
+    const val kotlin_serialization_runtime = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
 
     const val allopen = "org.jetbrains.kotlin:kotlin-allopen:${Versions.kotlin}"
     const val osslicenses_plugin = "com.google.android.gms:oss-licenses-plugin:${Versions.osslicenses_plugin}"

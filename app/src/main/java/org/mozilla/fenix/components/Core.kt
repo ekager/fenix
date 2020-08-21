@@ -50,9 +50,11 @@ import org.mozilla.fenix.AppRequestInterceptor
 import org.mozilla.fenix.Config
 import org.mozilla.fenix.HomeActivity
 import org.mozilla.fenix.R
+import org.mozilla.fenix.components.history.RecentlyClosedMiddleware
 import org.mozilla.fenix.downloads.DownloadService
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.settings
+import org.mozilla.fenix.library.history.RecentlyClosedStorage
 import org.mozilla.fenix.media.MediaService
 import org.mozilla.fenix.search.telemetry.ads.AdsTelemetry
 import org.mozilla.fenix.search.telemetry.incontent.InContentTelemetry
@@ -124,6 +126,10 @@ class Core(private val context: Context) {
         SessionStorage(context, engine = engine)
     }
 
+    private val recentlyClosedStorage: RecentlyClosedStorage by lazy {
+        RecentlyClosedStorage(context)
+    }
+
     /**
      * The [BrowserStore] holds the global [BrowserState].
      */
@@ -133,7 +139,8 @@ class Core(private val context: Context) {
                 MediaMiddleware(context, MediaService::class.java),
                 DownloadMiddleware(context, DownloadService::class.java),
                 ReaderViewMiddleware(),
-                ThumbnailsMiddleware(thumbnailStorage)
+                ThumbnailsMiddleware(thumbnailStorage),
+                RecentlyClosedMiddleware(recentlyClosedStorage)
             )
         )
     }
