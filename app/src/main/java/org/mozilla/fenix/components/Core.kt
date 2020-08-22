@@ -126,7 +126,7 @@ class Core(private val context: Context) {
         SessionStorage(context, engine = engine)
     }
 
-    private val recentlyClosedStorage: RecentlyClosedStorage by lazy {
+    val recentlyClosedStorage: RecentlyClosedStorage by lazy {
         RecentlyClosedStorage(context)
     }
 

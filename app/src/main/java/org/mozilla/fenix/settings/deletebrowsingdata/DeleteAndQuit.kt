@@ -25,6 +25,7 @@ fun deleteAndQuit(activity: Activity, coroutineScope: CoroutineScope, snackbar: 
         val controller = DefaultDeleteBrowsingDataController(
             activity.components.useCases.tabsUseCases.removeAllTabs,
             activity.components.core.historyStorage,
+            activity.components.core.recentlyClosedStorage,
             activity.components.core.permissionStorage,
             activity.components.core.engine,
             coroutineContext

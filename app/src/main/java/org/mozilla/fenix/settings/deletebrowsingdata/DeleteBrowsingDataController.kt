@@ -10,6 +10,7 @@ import mozilla.components.concept.engine.Engine
 import mozilla.components.concept.storage.HistoryStorage
 import mozilla.components.feature.tabs.TabsUseCases
 import org.mozilla.fenix.components.PermissionStorage
+import org.mozilla.fenix.library.history.RecentlyClosedStorage
 import kotlin.coroutines.CoroutineContext
 
 interface DeleteBrowsingDataController {
@@ -24,6 +25,7 @@ interface DeleteBrowsingDataController {
 class DefaultDeleteBrowsingDataController(
     private val removeAllTabs: TabsUseCases.RemoveAllTabsUseCase,
     private val historyStorage: HistoryStorage,
+    private val recentlyClosedStorage: RecentlyClosedStorage,
     private val permissionStorage: PermissionStorage,
     private val engine: Engine,
     private val coroutineContext: CoroutineContext = Dispatchers.Main
@@ -43,6 +45,7 @@ class DefaultDeleteBrowsingDataController(
         withContext(coroutineContext) {
             engine.clearData(Engine.BrowsingData.select(Engine.BrowsingData.DOM_STORAGES))
         }
+        recentlyClosedStorage.removeAllRecentlyClosedItems()
         historyStorage.deleteEverything()
     }
 

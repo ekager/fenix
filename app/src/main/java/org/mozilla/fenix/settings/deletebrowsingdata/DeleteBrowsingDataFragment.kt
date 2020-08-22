@@ -44,6 +44,7 @@ class DeleteBrowsingDataFragment : Fragment(R.layout.fragment_delete_browsing_da
         controller = DefaultDeleteBrowsingDataController(
             requireContext().components.useCases.tabsUseCases.removeAllTabs,
             requireContext().components.core.historyStorage,
+            requireContext().components.core.recentlyClosedStorage,
             requireContext().components.core.permissionStorage,
             requireContext().components.core.engine
         )
