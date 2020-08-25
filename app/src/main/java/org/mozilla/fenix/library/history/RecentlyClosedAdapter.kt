@@ -4,15 +4,11 @@
 
 package org.mozilla.fenix.library.history
 
-import android.content.Context
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import org.mozilla.fenix.R
 import org.mozilla.fenix.library.SelectionHolder
 import org.mozilla.fenix.library.history.viewholders.HistoryListItemViewHolder
 import java.util.Calendar
@@ -32,12 +28,6 @@ class RecentlyClosedAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryListItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
         return HistoryListItemViewHolder(view, historyInteractor, this)
-    }
-
-    fun updateMode(mode: HistoryFragmentState.Mode) {
-        this.mode = mode
-        // Update the delete button alpha that the first item holds
-        if (itemCount > 0) notifyItemChanged(0)
     }
 
     override fun onBindViewHolder(holder: HistoryListItemViewHolder, position: Int) {
@@ -65,7 +55,6 @@ class RecentlyClosedAdapter(
 
         holder.bind(current, timeGroup, position == 0, mode, isPendingDeletion)
     }
-
 
     companion object {
         private const val zeroDays = 0

@@ -83,6 +83,11 @@ interface HistoryViewInteractor : SelectionInteractor<HistoryItem> {
      * Called when the user clicks into recently closed
      */
     fun onOpenRecentlyClosed()
+
+    /**
+     * Called when the user clicks into history from recently closed
+     */
+    fun onExitRecentlyClosed()
 }
 
 /**

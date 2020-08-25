@@ -1469,6 +1469,8 @@
     <!-- Confirmation dialog button text when top sites limit is reached. -->
     <string name="top_sites_max_limit_confirmation_button">OK, Got It</string>
 
+    <!-- Text displayed in button to take user from recently closed tabs to full history -->
+    <string name="recently_closed_show_full_history">Show full history</string>
     <!-- Content description for close button in collection placeholder. -->
     <string name="remove_home_collection_placeholder_content_description">Remove</string>
 </resources>

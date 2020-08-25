@@ -26,7 +26,8 @@ interface HistoryController {
     fun handleCopyUrl(item: HistoryItem)
     fun handleShare(item: HistoryItem)
     fun handleRequestSync()
-    fun handleRecentlyClosed()
+    fun handleEnterRecentlyClosed()
+    fun handleExitRecentlyClosed()
 }
 
 class DefaultHistoryController(
@@ -58,6 +59,7 @@ class DefaultHistoryController(
     }
 
     override fun handleBackPressed(): Boolean {
+        // TODO clicking the back press from Recently Closed should go back to where you came from
         return if (store.state.mode is HistoryFragmentState.Mode.Editing) {
             store.dispatch(HistoryFragmentAction.ExitEditMode)
             true
@@ -103,7 +105,11 @@ class DefaultHistoryController(
         }
     }
 
-    override fun handleRecentlyClosed() {
+    override fun handleEnterRecentlyClosed() {
         store.dispatch(HistoryFragmentAction.EnterRecentlyClosedMode)
+    }
+
+    override fun handleExitRecentlyClosed() {
+        store.dispatch(HistoryFragmentAction.ExitRecentlyClosedMode)
     }
 }

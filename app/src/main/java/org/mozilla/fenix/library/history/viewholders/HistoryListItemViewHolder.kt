@@ -29,19 +29,6 @@ class HistoryListItemViewHolder(
 
     init {
         setupMenu()
-
-        itemView.delete_button.setOnClickListener {
-            val selected = selectionHolder.selectedItems
-            if (selected.isEmpty()) {
-                historyInteractor.onDeleteAll()
-            } else {
-                historyInteractor.onDeleteSome(selected)
-            }
-        }
-
-        itemView.recently_closed.setOnClickListener {
-            historyInteractor.onOpenRecentlyClosed()
-        }
     }
 
     fun bind(
@@ -60,12 +47,14 @@ class HistoryListItemViewHolder(
         itemView.history_layout.titleView.text = item.title
         itemView.history_layout.urlView.text = item.url
 
-        toggleTopContent(showTopContent, mode === HistoryFragmentState.Mode.Normal)
+        toggleTopContent(showTopContent, mode)
 
         val headerText = timeGroup?.humanReadable(itemView.context)
-        toggleHeader(headerText)
+        toggleHeader(headerText, mode)
 
-        itemView.history_layout.setSelectionInteractor(item, selectionHolder, historyInteractor)
+        if (mode !is HistoryFragmentState.Mode.RecentlyClosed) {
+            itemView.history_layout.setSelectionInteractor(item, selectionHolder, historyInteractor)
+        }
         itemView.history_layout.changeSelected(item in selectionHolder.selectedItems)
 
         if (this.item?.url != item.url) {
@@ -79,10 +68,29 @@ class HistoryListItemViewHolder(
         }
 
         this.item = item
+
+        if (mode !is HistoryFragmentState.Mode.RecentlyClosed) {
+            itemView.delete_button.setOnClickListener {
+                val selected = selectionHolder.selectedItems
+                if (selected.isEmpty()) {
+                    historyInteractor.onDeleteAll()
+                } else {
+                    historyInteractor.onDeleteSome(selected)
+                }
+            }
+        }
+
+        itemView.recently_closed.setOnClickListener {
+            if (mode is HistoryFragmentState.Mode.RecentlyClosed) {
+                historyInteractor.onExitRecentlyClosed()
+            } else {
+                historyInteractor.onOpenRecentlyClosed()
+            }
+        }
     }
 
-    private fun toggleHeader(headerText: String?) {
-        if (headerText != null) {
+    private fun toggleHeader(headerText: String?, mode: HistoryFragmentState.Mode) {
+        if (headerText != null && mode !is HistoryFragmentState.Mode.RecentlyClosed) {
             itemView.header_title.visibility = View.VISIBLE
             itemView.header_title.text = headerText
         } else {
@@ -92,13 +100,13 @@ class HistoryListItemViewHolder(
 
     private fun toggleTopContent(
         showTopContent: Boolean,
-        isNormalMode: Boolean
+        mode: HistoryFragmentState.Mode
     ) {
-        if (showTopContent) {
+        if (showTopContent && mode !is HistoryFragmentState.Mode.RecentlyClosed) {
             itemView.delete_button.run {
                 visibility = View.VISIBLE
 
-                if (isNormalMode) {
+                if (mode === HistoryFragmentState.Mode.Normal) {
                     isEnabled = true
                     alpha = 1f
                 } else {

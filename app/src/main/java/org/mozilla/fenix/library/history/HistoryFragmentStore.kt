@@ -34,6 +34,7 @@ sealed class HistoryFragmentAction : Action {
     data class UndoPendingDeletionSet(val itemIds: Set<Long>) : HistoryFragmentAction()
     object EnterDeletionMode : HistoryFragmentAction()
     object EnterRecentlyClosedMode: HistoryFragmentAction()
+    object ExitRecentlyClosedMode: HistoryFragmentAction()
     object ExitDeletionMode : HistoryFragmentAction()
     object StartSync : HistoryFragmentAction()
     object FinishSync : HistoryFragmentAction()
@@ -95,5 +96,7 @@ private fun historyStateReducer(
             )
         is HistoryFragmentAction.EnterRecentlyClosedMode ->
             state.copy(mode = HistoryFragmentState.Mode.RecentlyClosed)
+        is HistoryFragmentAction.ExitRecentlyClosedMode ->
+            state.copy(mode = HistoryFragmentState.Mode.Normal)
     }
 }

@@ -63,6 +63,10 @@ class HistoryInteractor(
     }
 
     override fun onOpenRecentlyClosed() {
-        historyController.handleRecentlyClosed()
+        historyController.handleEnterRecentlyClosed()
+    }
+
+    override fun onExitRecentlyClosed() {
+        historyController.handleExitRecentlyClosed()
     }
 }
