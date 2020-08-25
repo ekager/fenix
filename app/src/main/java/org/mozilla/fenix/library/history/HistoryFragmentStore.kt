@@ -33,6 +33,7 @@ sealed class HistoryFragmentAction : Action {
     data class AddPendingDeletionSet(val itemIds: Set<Long>) : HistoryFragmentAction()
     data class UndoPendingDeletionSet(val itemIds: Set<Long>) : HistoryFragmentAction()
     object EnterDeletionMode : HistoryFragmentAction()
+    object EnterRecentlyClosedMode: HistoryFragmentAction()
     object ExitDeletionMode : HistoryFragmentAction()
     object StartSync : HistoryFragmentAction()
     object FinishSync : HistoryFragmentAction()
@@ -52,6 +53,7 @@ data class HistoryFragmentState(
     sealed class Mode {
         open val selectedItems = emptySet<HistoryItem>()
 
+        object RecentlyClosed: Mode()
         object Normal : Mode()
         object Syncing : Mode()
         data class Editing(override val selectedItems: Set<HistoryItem>) : Mode()
@@ -91,5 +93,7 @@ private fun historyStateReducer(
             state.copy(
                 pendingDeletionIds = state.pendingDeletionIds - action.itemIds
             )
+        is HistoryFragmentAction.EnterRecentlyClosedMode ->
+            state.copy(mode = HistoryFragmentState.Mode.RecentlyClosed)
     }
 }

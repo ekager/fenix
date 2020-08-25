@@ -26,6 +26,7 @@ interface HistoryController {
     fun handleCopyUrl(item: HistoryItem)
     fun handleShare(item: HistoryItem)
     fun handleRequestSync()
+    fun handleRecentlyClosed()
 }
 
 class DefaultHistoryController(
@@ -100,5 +101,9 @@ class DefaultHistoryController(
             syncHistory.invoke()
             store.dispatch(HistoryFragmentAction.FinishSync)
         }
+    }
+
+    override fun handleRecentlyClosed() {
+        store.dispatch(HistoryFragmentAction.EnterRecentlyClosedMode)
     }
 }

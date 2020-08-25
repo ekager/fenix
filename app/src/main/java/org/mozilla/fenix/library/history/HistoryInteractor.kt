@@ -61,4 +61,8 @@ class HistoryInteractor(
     override fun onRequestSync() {
         historyController.handleRequestSync()
     }
+
+    override fun onOpenRecentlyClosed() {
+        historyController.handleRecentlyClosed()
+    }
 }

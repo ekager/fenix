@@ -38,6 +38,10 @@ class HistoryListItemViewHolder(
                 historyInteractor.onDeleteSome(selected)
             }
         }
+
+        itemView.recently_closed.setOnClickListener {
+            historyInteractor.onOpenRecentlyClosed()
+        }
     }
 
     fun bind(

@@ -141,6 +141,10 @@ class HistoryFragment : LibraryPageFragment<HistoryItem>(), UserInteractionHandl
             historyView.update(it)
         }
 
+        historyView.recentlyClosedAdapter.submitList(
+            view.context.components.core.recentlyClosedStorage.getRecentlyClosedItems()
+                .map { HistoryItem(it.id, it.title, it.url, it.timeClosed) })
+
         viewModel.history.observe(viewLifecycleOwner, Observer {
             historyView.historyAdapter.submitList(it)
         })
@@ -154,6 +158,7 @@ class HistoryFragment : LibraryPageFragment<HistoryItem>(), UserInteractionHandl
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         val menuRes = when (historyStore.state.mode) {
             HistoryFragmentState.Mode.Normal -> R.menu.library_menu
+            HistoryFragmentState.Mode.RecentlyClosed -> R.menu.library_menu
             is HistoryFragmentState.Mode.Syncing -> R.menu.library_menu
             is HistoryFragmentState.Mode.Editing -> R.menu.history_select_multi
         }

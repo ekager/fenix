@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.component_history.*
@@ -77,6 +78,11 @@ interface HistoryViewInteractor : SelectionInteractor<HistoryItem> {
      * Called when the user requests a sync of the history
      */
     fun onRequestSync()
+
+    /**
+     * Called when the user clicks into recently closed
+     */
+    fun onOpenRecentlyClosed()
 }
 
 /**
@@ -94,12 +100,14 @@ class HistoryView(
         private set
 
     val historyAdapter = HistoryAdapter(interactor)
+    val concatAdapter = ConcatAdapter(historyAdapter)
+    val recentlyClosedAdapter = RecentlyClosedAdapter(interactor)
     private val layoutManager = LinearLayoutManager(container.context)
 
     init {
         view.history_list.apply {
             layoutManager = this@HistoryView.layoutManager
-            adapter = historyAdapter
+            adapter = concatAdapter
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
 
@@ -143,7 +151,16 @@ class HistoryView(
         }
 
         when (val mode = state.mode) {
+            is HistoryFragmentState.Mode.RecentlyClosed -> {
+                concatAdapter.removeAdapter(historyAdapter)
+                concatAdapter.addAdapter(recentlyClosedAdapter)
+                setUiForNormalMode(
+                    context.getString(R.string.history_recently_closed_tabs)
+                )
+            }
             is HistoryFragmentState.Mode.Normal -> {
+                concatAdapter.removeAdapter(recentlyClosedAdapter)
+                concatAdapter.addAdapter(historyAdapter)
                 setUiForNormalMode(
                     context.getString(R.string.library_history)
                 )
