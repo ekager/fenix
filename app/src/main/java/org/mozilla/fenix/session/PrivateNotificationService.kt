@@ -42,6 +42,7 @@ class PrivateNotificationService : AbstractPrivateNotificationService() {
         val homeScreenIntent = Intent(this, HomeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra(HomeActivity.PRIVATE_BROWSING_MODE, isStartedFromPrivateShortcut)
+            putExtra(HomeActivity.OPEN_TO_HOME, true)
         }
 
         if (VisibilityLifecycleCallback.finishAndRemoveTaskIfInBackground(this)) {

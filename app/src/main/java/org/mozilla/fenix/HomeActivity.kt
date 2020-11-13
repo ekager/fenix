@@ -198,7 +198,7 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity {
                     navHost.navController,
                     this.intent
                 )
-            }
+            } && !shouldOpenToHome(intent)
         ) {
             navigateToBrowserOnColdStart()
         }
@@ -591,6 +591,18 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity {
     }
 
     /**
+     * Determines whether home should be explicitly opened.
+     * @param intent - The intent that started this activity. Is checked for having the 'OPEN_TO_HOME'-extra.
+     * @return true if the home should be opened explicitly, false otherwise.
+     */
+    private fun shouldOpenToHome(intent: Intent?): Boolean {
+        intent?.toSafeIntent()?.let {
+            return it.getBooleanExtra(OPEN_TO_HOME, false)
+        }
+        return false
+    }
+
+    /**
      * Determines whether the activity should be pushed to be backstack (i.e., 'minimized' to the recents
      * screen) upon starting.
      * @param intent - The intent that started this activity. Is checked for having the 'START_IN_RECENTS_SCREEN'-extra.
@@ -856,6 +868,7 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity {
         const val PRIVATE_BROWSING_MODE = "private_browsing_mode"
         const val EXTRA_DELETE_PRIVATE_TABS = "notification_delete_and_open"
         const val EXTRA_OPENED_FROM_NOTIFICATION = "notification_open"
+        const val OPEN_TO_HOME = "open_to_home"
         const val START_IN_RECENTS_SCREEN = "start_in_recents_screen"
 
         // PWA must have been used within last 30 days to be considered "recently used" for the
